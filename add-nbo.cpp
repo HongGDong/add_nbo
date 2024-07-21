@@ -17,14 +17,23 @@ int main(int argc, char* argv[]) {
     FILE* file1 = fopen(argv[1], "rb");
     FILE* file2 = fopen(argv[2], "rb");
 
+    if (file1 == NULL || file2 == NULL)
+    {
+        printf("File open Error!");
+        return 0;
+    }
+
     uint32_t value1 = 0;
     uint32_t value2 = 0;
 
     size_t read1 = fread(&value1, sizeof(uint32_t), 1, file1);
     size_t read2 = fread(&value2, sizeof(uint32_t), 1, file2);
 
-    fclose(file1);
-    fclose(file2);
+    if (read1 != 1 || read2 != 1)
+    {
+        printf("File read Error!");
+        return 0;
+    }
 
     value1 = change(value1);
     value2 = change(value2);
@@ -33,5 +42,7 @@ int main(int argc, char* argv[]) {
 
     printf("%d(0x%x) + %d(0x%x) = %d(0x%x)\n", value1, value1, value2, value2, sum, sum);
 
+    fclose(file1);
+    fclose(file2);
     return 0;
 }
